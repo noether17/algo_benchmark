@@ -1,5 +1,9 @@
 #pragma once
 
+// no sort
+template <typename RandomIt>
+void no_sort(RandomIt, RandomIt) {}
+
 // insertion sort
 template <typename RandomIt>
 void insertion_sort(RandomIt first, RandomIt last) {

@@ -17,6 +17,30 @@ auto constexpr min_array_size = 1 << 0;
 auto constexpr max_array_size = 1 << 10;
 auto constexpr total_items = n_repetitions * max_array_size;
 
+static void BM_NoSort(benchmark::State& state) {
+  auto size = state.range(0);
+  auto rd = std::random_device{};
+  auto gen = std::mt19937(rd());
+  gen.seed(1);
+  auto dis = std::uniform_int_distribution<int>(0, size);
+
+  auto v = std::vector<int>(total_items);
+  std::generate(v.begin(), v.end(), [&]() { return dis(gen); });
+
+  for (auto _ : state) {
+    for (auto iter = v.begin(); iter != v.end(); iter += size) {
+      no_sort(iter, iter + size);
+    }
+    benchmark::DoNotOptimize(v);
+  }
+
+  state.SetItemsProcessed(total_items);
+}
+BENCHMARK(BM_NoSort)
+    ->RangeMultiplier(2)
+    ->Range(min_array_size, max_array_size)
+    ->Iterations(1);
+
 static void BM_InsertionSort(benchmark::State& state) {
   auto size = state.range(0);
   auto rd = std::random_device{};
