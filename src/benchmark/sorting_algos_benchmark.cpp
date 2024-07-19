@@ -28,10 +28,12 @@ static void BM_NoSort(benchmark::State& state) {
   std::generate(v.begin(), v.end(), [&]() { return dis(gen); });
 
   for (auto _ : state) {
+    auto data = v.data();
+    benchmark::DoNotOptimize(data);
     for (auto iter = v.begin(); iter != v.end(); iter += size) {
       no_sort(iter, iter + size);
     }
-    benchmark::DoNotOptimize(v);
+    benchmark::ClobberMemory();
   }
 
   state.SetItemsProcessed(total_items);
@@ -52,10 +54,12 @@ static void BM_InsertionSort(benchmark::State& state) {
   std::generate(v.begin(), v.end(), [&]() { return dis(gen); });
 
   for (auto _ : state) {
+    auto data = v.data();
+    benchmark::DoNotOptimize(data);
     for (auto iter = v.begin(); iter != v.end(); iter += size) {
       insertion_sort(iter, iter + size);
     }
-    benchmark::DoNotOptimize(v);
+    benchmark::ClobberMemory();
   }
 
   state.SetItemsProcessed(total_items);
@@ -76,10 +80,12 @@ static void BM_BubbleSort(benchmark::State& state) {
   std::generate(v.begin(), v.end(), [&]() { return dis(gen); });
 
   for (auto _ : state) {
+    auto data = v.data();
+    benchmark::DoNotOptimize(data);
     for (auto iter = v.begin(); iter != v.end(); iter += size) {
       bubble_sort(iter, iter + size);
     }
-    benchmark::DoNotOptimize(v);
+    benchmark::ClobberMemory();
   }
 
   state.SetItemsProcessed(total_items);
@@ -100,10 +106,12 @@ static void BM_QuickSort(benchmark::State& state) {
   std::generate(v.begin(), v.end(), [&]() { return dis(gen); });
 
   for (auto _ : state) {
+    auto data = v.data();
+    benchmark::DoNotOptimize(data);
     for (auto iter = v.begin(); iter != v.end(); iter += size) {
       quick_sort(iter, iter + size);
     }
-    benchmark::DoNotOptimize(v);
+    benchmark::ClobberMemory();
   }
 
   state.SetItemsProcessed(total_items);
@@ -124,10 +132,12 @@ static void BM_HeapSort(benchmark::State& state) {
   std::generate(v.begin(), v.end(), [&]() { return dis(gen); });
 
   for (auto _ : state) {
+    auto data = v.data();
+    benchmark::DoNotOptimize(data);
     for (auto iter = v.begin(); iter != v.end(); iter += size) {
       heap_sort(iter, iter + size);
     }
-    benchmark::DoNotOptimize(v);
+    benchmark::ClobberMemory();
   }
 
   state.SetItemsProcessed(total_items);
