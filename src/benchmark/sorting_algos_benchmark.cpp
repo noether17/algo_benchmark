@@ -17,158 +17,89 @@ auto constexpr min_array_size = 1 << 0;
 auto constexpr max_array_size = 1 << 10;
 auto constexpr total_items = n_repetitions * max_array_size;
 
-static void BM_NoSort(benchmark::State& state) {
-  auto size = state.range(0);
-  auto rd = std::random_device{};
-  auto gen = std::mt19937(rd());
-  gen.seed(1);
-  auto dis = std::uniform_int_distribution<int>(0, size);
+struct NoSorter {
+  template <typename RandomIt>
+  void static sort(RandomIt first, RandomIt last) {
+    no_sort(first, last);
+  }
+};
 
+struct InsertionSorter {
+  template <typename RandomIt>
+  void static sort(RandomIt first, RandomIt last) {
+    insertion_sort(first, last);
+  }
+};
+
+struct InsertionSorter2 {
+  template <typename RandomIt>
+  void static sort(RandomIt first, RandomIt last) {
+    insertion_sort_2(first, last);
+  }
+};
+
+struct BubbleSorter {
+  template <typename RandomIt>
+  void static sort(RandomIt first, RandomIt last) {
+    bubble_sort(first, last);
+  }
+};
+
+struct QuickSorter {
+  template <typename RandomIt>
+  void static sort(RandomIt first, RandomIt last) {
+    quick_sort(first, last);
+  }
+};
+
+struct HeapSorter {
+  template <typename RandomIt>
+  void static sort(RandomIt first, RandomIt last) {
+    heap_sort(first, last);
+  }
+};
+
+template <typename SortType>
+static void BM_Sort(benchmark::State& state) {
+  auto size = state.range(0);
+  auto gen = std::mt19937(0);
   auto v = std::vector<int>(total_items);
-  std::generate(v.begin(), v.end(), [&]() { return dis(gen); });
+  std::iota(v.begin(), v.end(), 0);
+  std::shuffle(v.begin(), v.end(), gen);
 
   for (auto _ : state) {
     auto data = v.data();
     benchmark::DoNotOptimize(data);
     for (auto iter = v.begin(); iter != v.end(); iter += size) {
-      no_sort(iter, iter + size);
+      SortType::sort(iter, iter + size);
     }
     benchmark::ClobberMemory();
   }
 
   state.SetItemsProcessed(total_items);
 }
-BENCHMARK(BM_NoSort)
+
+BENCHMARK_TEMPLATE(BM_Sort, NoSorter)
     ->RangeMultiplier(2)
     ->Range(min_array_size, max_array_size)
     ->Iterations(1);
-
-static void BM_InsertionSort(benchmark::State& state) {
-  auto size = state.range(0);
-  auto rd = std::random_device{};
-  auto gen = std::mt19937(rd());
-  gen.seed(1);
-  auto dis = std::uniform_int_distribution<int>(0, size);
-
-  auto v = std::vector<int>(total_items);
-  std::generate(v.begin(), v.end(), [&]() { return dis(gen); });
-
-  for (auto _ : state) {
-    auto data = v.data();
-    benchmark::DoNotOptimize(data);
-    for (auto iter = v.begin(); iter != v.end(); iter += size) {
-      insertion_sort(iter, iter + size);
-    }
-    benchmark::ClobberMemory();
-  }
-
-  state.SetItemsProcessed(total_items);
-}
-BENCHMARK(BM_InsertionSort)
+BENCHMARK_TEMPLATE(BM_Sort, InsertionSorter)
     ->RangeMultiplier(2)
     ->Range(min_array_size, max_array_size)
     ->Iterations(1);
-
-static void BM_InsertionSort2(benchmark::State& state) {
-  auto size = state.range(0);
-  auto rd = std::random_device{};
-  auto gen = std::mt19937(rd());
-  gen.seed(1);
-  auto dis = std::uniform_int_distribution<int>(0, size);
-
-  auto v = std::vector<int>(total_items);
-  std::generate(v.begin(), v.end(), [&]() { return dis(gen); });
-
-  for (auto _ : state) {
-    auto data = v.data();
-    benchmark::DoNotOptimize(data);
-    for (auto iter = v.begin(); iter != v.end(); iter += size) {
-      insertion_sort_2(iter, iter + size);
-    }
-    benchmark::ClobberMemory();
-  }
-
-  state.SetItemsProcessed(total_items);
-}
-BENCHMARK(BM_InsertionSort2)
+BENCHMARK_TEMPLATE(BM_Sort, InsertionSorter2)
     ->RangeMultiplier(2)
     ->Range(min_array_size, max_array_size)
     ->Iterations(1);
-
-static void BM_BubbleSort(benchmark::State& state) {
-  auto size = state.range(0);
-  auto rd = std::random_device{};
-  auto gen = std::mt19937(rd());
-  gen.seed(1);
-  auto dis = std::uniform_int_distribution<int>(0, size);
-
-  auto v = std::vector<int>(total_items);
-  std::generate(v.begin(), v.end(), [&]() { return dis(gen); });
-
-  for (auto _ : state) {
-    auto data = v.data();
-    benchmark::DoNotOptimize(data);
-    for (auto iter = v.begin(); iter != v.end(); iter += size) {
-      bubble_sort(iter, iter + size);
-    }
-    benchmark::ClobberMemory();
-  }
-
-  state.SetItemsProcessed(total_items);
-}
-BENCHMARK(BM_BubbleSort)
+BENCHMARK_TEMPLATE(BM_Sort, BubbleSorter)
     ->RangeMultiplier(2)
     ->Range(min_array_size, max_array_size)
     ->Iterations(1);
-
-static void BM_QuickSort(benchmark::State& state) {
-  auto size = state.range(0);
-  auto rd = std::random_device{};
-  auto gen = std::mt19937(rd());
-  gen.seed(1);
-  auto dis = std::uniform_int_distribution<int>(0, size);
-
-  auto v = std::vector<int>(total_items);
-  std::generate(v.begin(), v.end(), [&]() { return dis(gen); });
-
-  for (auto _ : state) {
-    auto data = v.data();
-    benchmark::DoNotOptimize(data);
-    for (auto iter = v.begin(); iter != v.end(); iter += size) {
-      quick_sort(iter, iter + size);
-    }
-    benchmark::ClobberMemory();
-  }
-
-  state.SetItemsProcessed(total_items);
-}
-BENCHMARK(BM_QuickSort)
+BENCHMARK_TEMPLATE(BM_Sort, QuickSorter)
     ->RangeMultiplier(2)
     ->Range(min_array_size, max_array_size)
     ->Iterations(1);
-
-static void BM_HeapSort(benchmark::State& state) {
-  auto size = state.range(0);
-  auto rd = std::random_device{};
-  auto gen = std::mt19937(rd());
-  gen.seed(1);
-  auto dis = std::uniform_int_distribution<int>(0, size);
-
-  auto v = std::vector<int>(total_items);
-  std::generate(v.begin(), v.end(), [&]() { return dis(gen); });
-
-  for (auto _ : state) {
-    auto data = v.data();
-    benchmark::DoNotOptimize(data);
-    for (auto iter = v.begin(); iter != v.end(); iter += size) {
-      heap_sort(iter, iter + size);
-    }
-    benchmark::ClobberMemory();
-  }
-
-  state.SetItemsProcessed(total_items);
-}
-BENCHMARK(BM_HeapSort)
+BENCHMARK_TEMPLATE(BM_Sort, HeapSorter)
     ->RangeMultiplier(2)
     ->Range(min_array_size, max_array_size)
     ->Iterations(1);
