@@ -25,6 +25,20 @@ void insertion_sort(RandomIt first, RandomIt last) {
   }
 }
 
+// insertion sort 2
+template <typename RandomIt>
+void insertion_sort_2(RandomIt first, RandomIt last) {
+  for (auto next = first + 1; next < last; ++next) {
+    auto insert_value = *next;
+    auto insert_pos = next;
+    for (; insert_pos > first and insert_value < *(insert_pos - 1);
+         --insert_pos) {
+      *insert_pos = *(insert_pos - 1);
+    }
+    *insert_pos = insert_value;
+  }
+}
+
 // bubble sort
 template <typename RandomIt>
 void bubble_sort(RandomIt first, RandomIt last) {

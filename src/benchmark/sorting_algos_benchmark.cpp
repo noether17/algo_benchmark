@@ -69,6 +69,32 @@ BENCHMARK(BM_InsertionSort)
     ->Range(min_array_size, max_array_size)
     ->Iterations(1);
 
+static void BM_InsertionSort2(benchmark::State& state) {
+  auto size = state.range(0);
+  auto rd = std::random_device{};
+  auto gen = std::mt19937(rd());
+  gen.seed(1);
+  auto dis = std::uniform_int_distribution<int>(0, size);
+
+  auto v = std::vector<int>(total_items);
+  std::generate(v.begin(), v.end(), [&]() { return dis(gen); });
+
+  for (auto _ : state) {
+    auto data = v.data();
+    benchmark::DoNotOptimize(data);
+    for (auto iter = v.begin(); iter != v.end(); iter += size) {
+      insertion_sort_2(iter, iter + size);
+    }
+    benchmark::ClobberMemory();
+  }
+
+  state.SetItemsProcessed(total_items);
+}
+BENCHMARK(BM_InsertionSort2)
+    ->RangeMultiplier(2)
+    ->Range(min_array_size, max_array_size)
+    ->Iterations(1);
+
 static void BM_BubbleSort(benchmark::State& state) {
   auto size = state.range(0);
   auto rd = std::random_device{};
