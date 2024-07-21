@@ -1,70 +1,61 @@
 #include "sorting_algos.hpp"
 
+#include <numeric>
+#include <random>
 #include <vector>
 
 #include "gtest/gtest.h"
 
-TEST(SortingAlgosTest, InsertionSortTest) {
-  auto v = std::vector{5, 2, 4, 6, 1, 3};
+class SortingAlgosTest : public testing::Test {
+ protected:
+  auto static constexpr size = 1024;
+  std::vector<int> reference_vector{};
+  std::vector<int> scrambled_vector{};
 
-  insertion_sort(v.begin(), v.end());
+  SortingAlgosTest() : reference_vector(size) {
+    std::iota(reference_vector.begin(), reference_vector.end(), 0);
+    scrambled_vector = reference_vector;
+    auto g = std::mt19937(0);
+    std::shuffle(scrambled_vector.begin(), scrambled_vector.end(), g);
+  }
+};
 
-  EXPECT_EQ(1, v[0]);
-  EXPECT_EQ(2, v[1]);
-  EXPECT_EQ(3, v[2]);
-  EXPECT_EQ(4, v[3]);
-  EXPECT_EQ(5, v[4]);
-  EXPECT_EQ(6, v[5]);
+TEST_F(SortingAlgosTest, InsertionSortTest) {
+  insertion_sort(scrambled_vector.begin(), scrambled_vector.end());
+
+  for (std::size_t i = 0; i < reference_vector.size(); ++i) {
+    EXPECT_EQ(reference_vector[i], scrambled_vector[i]);
+  }
 }
 
-TEST(SortingAlgosTest, InsertionSort2Test) {
-  auto v = std::vector{5, 2, 4, 6, 1, 3};
+TEST_F(SortingAlgosTest, InsertionSort2Test) {
+  insertion_sort_2(scrambled_vector.begin(), scrambled_vector.end());
 
-  insertion_sort_2(v.begin(), v.end());
-
-  EXPECT_EQ(1, v[0]);
-  EXPECT_EQ(2, v[1]);
-  EXPECT_EQ(3, v[2]);
-  EXPECT_EQ(4, v[3]);
-  EXPECT_EQ(5, v[4]);
-  EXPECT_EQ(6, v[5]);
+  for (std::size_t i = 0; i < reference_vector.size(); ++i) {
+    EXPECT_EQ(reference_vector[i], scrambled_vector[i]);
+  }
 }
 
-TEST(SortingAlgosTest, BubbleSortTest) {
-  auto v = std::vector{5, 2, 4, 6, 1, 3};
+TEST_F(SortingAlgosTest, BubbleSortTest) {
+  bubble_sort(scrambled_vector.begin(), scrambled_vector.end());
 
-  bubble_sort(v.begin(), v.end());
-
-  EXPECT_EQ(1, v[0]);
-  EXPECT_EQ(2, v[1]);
-  EXPECT_EQ(3, v[2]);
-  EXPECT_EQ(4, v[3]);
-  EXPECT_EQ(5, v[4]);
-  EXPECT_EQ(6, v[5]);
+  for (std::size_t i = 0; i < reference_vector.size(); ++i) {
+    EXPECT_EQ(reference_vector[i], scrambled_vector[i]);
+  }
 }
 
-TEST(SortingAlgosTest, QuickSortTest) {
-  auto v = std::vector{5, 2, 4, 6, 1, 3};
+TEST_F(SortingAlgosTest, QuickSortTest) {
+  quick_sort(scrambled_vector.begin(), scrambled_vector.end());
 
-  quick_sort(v.begin(), v.end());
-
-  EXPECT_EQ(1, v[0]);
-  EXPECT_EQ(2, v[1]);
-  EXPECT_EQ(3, v[2]);
-  EXPECT_EQ(4, v[3]);
-  EXPECT_EQ(5, v[4]);
-  EXPECT_EQ(6, v[5]);
+  for (std::size_t i = 0; i < reference_vector.size(); ++i) {
+    EXPECT_EQ(reference_vector[i], scrambled_vector[i]);
+  }
 }
 
-TEST(SortingAlgosTest, HeapSortTest) {
-  auto v = std::vector{5, 2, 4, 6, 1, 3};
+TEST_F(SortingAlgosTest, HeapSortTest) {
+  heap_sort(scrambled_vector.begin(), scrambled_vector.end());
 
-  heap_sort(v.begin(), v.end());
-
-  EXPECT_EQ(1, v[0]);
-  EXPECT_EQ(2, v[1]);
-  EXPECT_EQ(3, v[2]);
-  EXPECT_EQ(4, v[3]);
-  EXPECT_EQ(5, v[4]);
-  EXPECT_EQ(6, v[5]);
+  for (std::size_t i = 0; i < reference_vector.size(); ++i) {
+    EXPECT_EQ(reference_vector[i], scrambled_vector[i]);
+  }
 }
