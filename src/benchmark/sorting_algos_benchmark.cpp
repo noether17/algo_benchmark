@@ -6,16 +6,8 @@
 
 #include "sorting_algos.hpp"
 
-// #define REPEAT2(X) X X
-// #define REPEAT4(X) REPEAT2(X) REPEAT2(X)
-// #define REPEAT8(X) REPEAT4(X) REPEAT4(X)
-// #define REPEAT16(X) REPEAT8(X) REPEAT8(X)
-// #define REPEAT(X) REPEAT16(X) REPEAT16(X)
-
-auto constexpr n_repetitions = 1024;
 auto constexpr min_array_size = 1 << 0;
 auto constexpr max_array_size = 1 << 10;
-auto constexpr total_items = n_repetitions * max_array_size;
 
 struct NoSorter {
   template <typename RandomIt>
@@ -59,19 +51,34 @@ struct HeapSorter {
   }
 };
 
+auto constexpr n_permutations = 64;
+auto constexpr n_repetitions = 64;
+
 template <typename SortType>
 static void BM_Sort(benchmark::State& state) {
   auto size = state.range(0);
+
+  auto n_randomized = size * n_permutations;
+  auto random_vector = std::vector<int>(n_randomized);
+  std::iota(random_vector.begin(), random_vector.end(), 0);
   auto gen = std::mt19937(0);
-  auto v = std::vector<int>(total_items);
-  std::iota(v.begin(), v.end(), 0);
-  std::shuffle(v.begin(), v.end(), gen);
+  std::shuffle(random_vector.begin(), random_vector.end(), gen);
+
+  auto total_items = n_randomized * n_repetitions;
+  auto v = std::vector<int>{};
+  v.reserve(total_items);
+  for (auto i = 0; i < n_repetitions; ++i) {
+    v.insert(v.end(), random_vector.begin(), random_vector.end());
+  }
 
   for (auto _ : state) {
     auto data = v.data();
     benchmark::DoNotOptimize(data);
-    for (auto iter = v.begin(); iter != v.end(); iter += size) {
-      SortType::sort(iter, iter + size);
+    auto segment_begin = v.begin();
+    while (segment_begin != v.end()) {
+      auto segment_end = segment_begin + size;
+      SortType::sort(segment_begin, segment_end);
+      segment_begin = segment_end;
     }
     benchmark::ClobberMemory();
   }

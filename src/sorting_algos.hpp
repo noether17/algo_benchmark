@@ -9,11 +9,14 @@ template <typename RandomIt>
 void insertion_sort(RandomIt first, RandomIt last) {
   auto next = first + 1;
   while (next != last) {
+    // find insertion point using forward search
     auto insertion_point = first;
     auto insert_value = *next;
     while (*insertion_point < insert_value) {
       ++insertion_point;
     }
+
+    // rotate insert_value into sorted position
     while (insertion_point != next) {
       auto temp = *insertion_point;
       *insertion_point = insert_value;
