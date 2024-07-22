@@ -6,6 +6,14 @@
 
 #include "sorting_algos.hpp"
 
+#define REPEAT2(X) X X
+#define REPEAT4(X) REPEAT2(REPEAT2(X))
+#define REPEAT16(X) REPEAT4(REPEAT4(X))
+#define REPEAT64(X) REPEAT4(REPEAT16(X))
+#define REPEAT(X) REPEAT64(REPEAT64(X))  // n_repetitions * n_permutations
+
+auto constexpr n_repetitions = 64;
+
 auto constexpr min_array_size = 1 << 0;
 auto constexpr max_array_size = 1 << 10;
 
@@ -52,7 +60,6 @@ struct HeapSorter {
 };
 
 auto constexpr n_permutations = 64;
-auto constexpr n_repetitions = 64;
 
 template <typename SortType>
 static void BM_Sort(benchmark::State& state) {
@@ -75,11 +82,9 @@ static void BM_Sort(benchmark::State& state) {
     auto data = v.data();
     benchmark::DoNotOptimize(data);
     auto segment_begin = v.begin();
-    while (segment_begin != v.end()) {
-      auto segment_end = segment_begin + size;
-      SortType::sort(segment_begin, segment_end);
-      segment_begin = segment_end;
-    }
+    auto segment_end = segment_begin + size;
+    REPEAT(SortType::sort(segment_begin, segment_end);
+           segment_begin = segment_end; segment_end += size;)
     benchmark::ClobberMemory();
   }
 
