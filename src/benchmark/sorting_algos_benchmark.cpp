@@ -71,21 +71,20 @@ static void BM_Sort(benchmark::State& state) {
     return v;
   }();
 
-  // auto vector_copy = std::vector<int>(total_items);
+  auto vector_copy = std::vector<int>(total_items);
   for (auto _ : state) {
-    // std::copy(reference_vector.begin(), reference_vector.end(),
-    //           vector_copy.begin());
-    auto vector_copy = reference_vector;  //
-    // auto data = vector_copy.data();
-    // benchmark::DoNotOptimize(data);
+    std::copy(reference_vector.begin(), reference_vector.end(),
+              vector_copy.begin());
+    auto data = vector_copy.data();
+    benchmark::DoNotOptimize(data);
     auto current_begin = vector_copy.begin();
-    auto current_end = current_begin;
-    REPEAT(benchmark::DoNotOptimize(current_end += size);
-           SortType::sort(current_begin, current_end);
-           // benchmark::ClobberMemory();
-           benchmark::DoNotOptimize(vector_copy);  //
-           // benchmark::DoNotOptimize(current_begin = current_end);)
-           benchmark::DoNotOptimize(current_begin += size);)
+    auto current_end = current_begin + size;
+    REPEAT(SortType::sort(current_begin, current_end);
+           benchmark::DoNotOptimize(data); benchmark::ClobberMemory();
+           benchmark::DoNotOptimize(current_begin += size);
+           benchmark::DoNotOptimize(current_end += size);)
+    // faster to increment current_begin and current_end separately than to
+    // assign current_begin = current_end
   }
 
   state.SetItemsProcessed(state.iterations() * total_items);
