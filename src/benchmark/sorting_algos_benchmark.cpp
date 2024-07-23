@@ -9,9 +9,9 @@
 #define REPEAT2(X) X X
 #define REPEAT4(X) REPEAT2(REPEAT2(X))
 #define REPEAT16(X) REPEAT4(REPEAT4(X))
-#define REPEAT(X) REPEAT4(REPEAT16(X))
+#define REPEAT(X) REPEAT16(REPEAT16(X))
 
-auto constexpr n_repetitions = 64;
+auto constexpr n_repetitions = 256;
 
 auto constexpr min_array_size = 1 << 0;
 auto constexpr max_array_size = 1 << 10;
@@ -58,60 +58,54 @@ struct HeapSorter {
   }
 };
 
-auto constexpr n_permutations = 64;
-
 template <typename SortType>
 static void BM_Sort(benchmark::State& state) {
-  auto size = state.range(0);
+  auto const size = state.range(0);
 
-  auto n_randomized = size * n_permutations;
-  auto random_vector = std::vector<int>(n_randomized);
-  std::iota(random_vector.begin(), random_vector.end(), 0);
-  auto gen = std::mt19937(0);
-  std::shuffle(random_vector.begin(), random_vector.end(), gen);
+  auto const total_items = size * n_repetitions;
+  auto const reference_vector = [total_items]() {
+    auto v = std::vector<int>(total_items);
+    std::iota(v.begin(), v.end(), 0);
+    auto gen = std::mt19937(0);
+    std::shuffle(v.begin(), v.end(), gen);
+    return v;
+  }();
 
-  auto vector_copy = std::vector<int>(size);
+  // auto vector_copy = std::vector<int>(total_items);
   for (auto _ : state) {
-    auto permutation_begin = random_vector.begin();
-    while (permutation_begin != random_vector.end()) {
-      auto permutation_end = permutation_begin + size;
-
-      auto data = vector_copy.data();
-      benchmark::DoNotOptimize(data);
-      REPEAT(std::copy(permutation_begin, permutation_end, vector_copy.begin());
-             benchmark::ClobberMemory();
-             SortType::sort(vector_copy.begin(), vector_copy.end());
-             benchmark::ClobberMemory();)
-
-      permutation_begin = permutation_end;
-    }
+    // std::copy(reference_vector.begin(), reference_vector.end(),
+    //           vector_copy.begin());
+    auto vector_copy = reference_vector;  //
+    // auto data = vector_copy.data();
+    // benchmark::DoNotOptimize(data);
+    auto current_begin = vector_copy.begin();
+    auto current_end = current_begin;
+    REPEAT(benchmark::DoNotOptimize(current_end += size);
+           SortType::sort(current_begin, current_end);
+           // benchmark::ClobberMemory();
+           benchmark::DoNotOptimize(vector_copy);  //
+           // benchmark::DoNotOptimize(current_begin = current_end);)
+           benchmark::DoNotOptimize(current_begin += size);)
   }
 
-  auto total_items = n_randomized * n_repetitions;
-  state.SetItemsProcessed(total_items);
+  state.SetItemsProcessed(state.iterations() * total_items);
 }
 
 BENCHMARK_TEMPLATE(BM_Sort, NoSorter)
     ->RangeMultiplier(2)
-    ->Range(min_array_size, max_array_size)
-    ->Iterations(1);
+    ->Range(min_array_size, max_array_size);
 BENCHMARK_TEMPLATE(BM_Sort, InsertionSorter)
     ->RangeMultiplier(2)
-    ->Range(min_array_size, max_array_size)
-    ->Iterations(1);
+    ->Range(min_array_size, max_array_size);
 BENCHMARK_TEMPLATE(BM_Sort, InsertionSorter2)
     ->RangeMultiplier(2)
-    ->Range(min_array_size, max_array_size)
-    ->Iterations(1);
+    ->Range(min_array_size, max_array_size);
 BENCHMARK_TEMPLATE(BM_Sort, BubbleSorter)
     ->RangeMultiplier(2)
-    ->Range(min_array_size, max_array_size)
-    ->Iterations(1);
+    ->Range(min_array_size, max_array_size);
 BENCHMARK_TEMPLATE(BM_Sort, QuickSorter)
     ->RangeMultiplier(2)
-    ->Range(min_array_size, max_array_size)
-    ->Iterations(1);
+    ->Range(min_array_size, max_array_size);
 BENCHMARK_TEMPLATE(BM_Sort, HeapSorter)
     ->RangeMultiplier(2)
-    ->Range(min_array_size, max_array_size)
-    ->Iterations(1);
+    ->Range(min_array_size, max_array_size);
