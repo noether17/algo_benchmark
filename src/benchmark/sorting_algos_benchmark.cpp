@@ -80,9 +80,10 @@ static void BM_Sort(benchmark::State& state) {
     auto current_begin = vector_copy.begin();
     auto current_end = current_begin + size;
     REPEAT(SortType::sort(current_begin, current_end);
-           benchmark::DoNotOptimize(data); benchmark::ClobberMemory();
+           benchmark::DoNotOptimize(data);
            benchmark::DoNotOptimize(current_begin += size);
-           benchmark::DoNotOptimize(current_end += size);)
+           benchmark::DoNotOptimize(current_end += size);
+           benchmark::ClobberMemory();)
     // faster to increment current_begin and current_end separately than to
     // assign current_begin = current_end
   }
