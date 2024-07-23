@@ -76,7 +76,6 @@ static void BM_Sort(benchmark::State& state) {
     std::copy(reference_vector.begin(), reference_vector.end(),
               vector_copy.begin());
     auto data = vector_copy.data();
-    benchmark::DoNotOptimize(data);
     auto current_begin = vector_copy.begin();
     auto current_end = current_begin + size;
     REPEAT(SortType::sort(current_begin, current_end);
