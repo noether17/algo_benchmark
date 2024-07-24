@@ -50,24 +50,19 @@ void quick_sort(RandomIt first, RandomIt last) {
   if (first == last) {
     return;
   }
-  auto pivot_loc = first + (last - first) / 2;  // iterator to midpoint
+  auto pivot_loc = first + (last - first) / 2;  // use midpoint as pivot
   auto const pivot = *pivot_loc;
+  std::swap(*pivot_loc, *(last - 1));
 
-  // move pivot to start
-  *pivot_loc = *first;
-  *first = pivot;
   pivot_loc = first;
-
-  auto current = pivot_loc + 1;
-  while (current != last) {
+  for (auto current = first; current != last - 1; ++current) {
     if (*current < pivot) {
-      *pivot_loc = *current;
-      *current = *(pivot_loc + 1);
-      *(pivot_loc + 1) = pivot;
+      std::swap(*pivot_loc, *current);
       ++pivot_loc;
     }
-    ++current;
   }
+  std::swap(*pivot_loc, *(last - 1));
+
   quick_sort(first, pivot_loc);
   quick_sort(pivot_loc + 1, last);
 }
