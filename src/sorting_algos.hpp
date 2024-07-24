@@ -31,18 +31,17 @@ void binary_insertion_sort(RandomIt first, RandomIt last) {
 // bubble sort
 template <typename RandomIt>
 void bubble_sort(RandomIt first, RandomIt last) {
-  while (first != last) {
-    auto bubble = first;
-    while (bubble != last - 1) {
+  auto swapped = true;
+  while (swapped) {
+    swapped = false;
+    for (auto bubble = first; bubble < last - 1; ++bubble) {
       if (*(bubble + 1) < *bubble) {
-        auto temp = *bubble;
-        *bubble = *(bubble + 1);
-        *(bubble + 1) = temp;
+        std::swap(*(bubble + 1), *bubble);
+        swapped = true;
       }
-      ++bubble;
     }
     --last;
-  }
+  };
 }
 
 // quick sort
