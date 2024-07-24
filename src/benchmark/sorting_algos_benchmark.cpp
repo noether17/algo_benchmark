@@ -30,10 +30,10 @@ struct InsertionSorter {
   }
 };
 
-struct InsertionSorter2 {
+struct BinaryInsertionSorter {
   template <typename RandomIt>
   void static sort(RandomIt first, RandomIt last) {
-    insertion_sort_2(first, last);
+    binary_insertion_sort(first, last);
   }
 };
 
@@ -96,7 +96,7 @@ BENCHMARK_TEMPLATE(BM_Sort, NoSorter)
 BENCHMARK_TEMPLATE(BM_Sort, InsertionSorter)
     ->RangeMultiplier(2)
     ->Range(min_array_size, max_array_size);
-BENCHMARK_TEMPLATE(BM_Sort, InsertionSorter2)
+BENCHMARK_TEMPLATE(BM_Sort, BinaryInsertionSorter)
     ->RangeMultiplier(2)
     ->Range(min_array_size, max_array_size);
 BENCHMARK_TEMPLATE(BM_Sort, BubbleSorter)

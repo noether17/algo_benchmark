@@ -1,5 +1,7 @@
 #pragma once
 
+#include <algorithm>
+
 // no sort
 template <typename RandomIt>
 void no_sort(RandomIt, RandomIt) {}
@@ -7,30 +9,6 @@ void no_sort(RandomIt, RandomIt) {}
 // insertion sort
 template <typename RandomIt>
 void insertion_sort(RandomIt first, RandomIt last) {
-  auto next = first + 1;
-  while (next != last) {
-    // find insertion point using forward search
-    auto insertion_point = first;
-    auto insert_value = *next;
-    while (*insertion_point < insert_value) {
-      ++insertion_point;
-    }
-
-    // rotate insert_value into sorted position
-    while (insertion_point != next) {
-      auto temp = *insertion_point;
-      *insertion_point = insert_value;
-      insert_value = temp;
-      ++insertion_point;
-    }
-    *next = insert_value;
-    ++next;
-  }
-}
-
-// insertion sort 2
-template <typename RandomIt>
-void insertion_sort_2(RandomIt first, RandomIt last) {
   for (auto next = first + 1; next < last; ++next) {
     auto insert_value = *next;
     auto insert_pos = next;
@@ -39,6 +17,14 @@ void insertion_sort_2(RandomIt first, RandomIt last) {
       *insert_pos = *(insert_pos - 1);
     }
     *insert_pos = insert_value;
+  }
+}
+
+// binary insertion sort
+template <typename RandomIt>
+void binary_insertion_sort(RandomIt first, RandomIt last) {
+  for (auto next = first + 1; next < last; ++next) {
+    std::rotate(std::upper_bound(first, next, *next), next, next + 1);
   }
 }
 

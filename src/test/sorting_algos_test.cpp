@@ -28,8 +28,8 @@ TEST_F(SortingAlgosTest, InsertionSortTest) {
   }
 }
 
-TEST_F(SortingAlgosTest, InsertionSort2Test) {
-  insertion_sort_2(scrambled_vector.begin(), scrambled_vector.end());
+TEST_F(SortingAlgosTest, BinaryInsertionSortTest) {
+  binary_insertion_sort(scrambled_vector.begin(), scrambled_vector.end());
 
   for (std::size_t i = 0; i < reference_vector.size(); ++i) {
     EXPECT_EQ(reference_vector[i], scrambled_vector[i]);
