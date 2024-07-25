@@ -68,6 +68,36 @@ void quick_sort(RandomIt first, RandomIt last) {
   quick_sort(pivot_loc + 1, last);
 }
 
+// quick sort using Hoare partition
+template <typename RandomIt>
+void hoare_quick_sort(RandomIt first, RandomIt last) {
+  if ((last - first) < 2) {
+    return;
+  }
+  auto pivot_loc = first + (last - first) / 2;  // use midpoint as pivot
+  auto const pivot = *pivot_loc;
+  std::swap(*pivot_loc, *first);
+
+  auto lo = first - 1;
+  auto hi = last;
+  while (true) {
+    do {
+      ++lo;
+    } while (*lo < pivot);
+    do {
+      --hi;
+    } while (pivot < *hi);
+    if (not(lo < hi)) {
+      break;
+    }
+    std::swap(*lo, *hi);
+  }
+
+  auto partition = hi + 1;
+  hoare_quick_sort(first, partition);
+  hoare_quick_sort(partition, last);
+}
+
 // heapsort
 auto inline heap_parent(int i) { return (i - 1) / 2; }
 auto inline heap_left(int i) { return 2 * i + 1; }

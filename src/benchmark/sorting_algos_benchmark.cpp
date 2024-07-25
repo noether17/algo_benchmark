@@ -51,6 +51,13 @@ struct QuickSorter {
   }
 };
 
+struct HoareQuickSorter {
+  template <typename RandomIt>
+  void static sort(RandomIt first, RandomIt last) {
+    hoare_quick_sort(first, last);
+  }
+};
+
 struct HeapSorter {
   template <typename RandomIt>
   void static sort(RandomIt first, RandomIt last) {
@@ -110,6 +117,9 @@ BENCHMARK_TEMPLATE(BM_Sort, BubbleSorter)
     ->RangeMultiplier(2)
     ->Range(min_array_size, max_array_size);
 BENCHMARK_TEMPLATE(BM_Sort, QuickSorter)
+    ->RangeMultiplier(2)
+    ->Range(min_array_size, max_array_size);
+BENCHMARK_TEMPLATE(BM_Sort, HoareQuickSorter)
     ->RangeMultiplier(2)
     ->Range(min_array_size, max_array_size);
 BENCHMARK_TEMPLATE(BM_Sort, HeapSorter)

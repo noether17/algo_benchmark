@@ -52,6 +52,14 @@ TEST_F(SortingAlgosTest, QuickSortTest) {
   }
 }
 
+TEST_F(SortingAlgosTest, HoareQuickSortTest) {
+  hoare_quick_sort(scrambled_vector.begin(), scrambled_vector.end());
+
+  for (std::size_t i = 0; i < reference_vector.size(); ++i) {
+    EXPECT_EQ(reference_vector[i], scrambled_vector[i]);
+  }
+}
+
 TEST_F(SortingAlgosTest, HeapSortTest) {
   heap_sort(scrambled_vector.begin(), scrambled_vector.end());
 
