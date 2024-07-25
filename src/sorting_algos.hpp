@@ -1,6 +1,7 @@
 #pragma once
 
 #include <algorithm>
+#include <vector>
 
 // no sort
 template <typename RandomIt>
@@ -99,4 +100,36 @@ void heap_sort(RandomIt first, RandomIt last) {
     std::swap(*first, *last);
     max_heap_combine(first, last - first, 0);
   }
+}
+
+// merge sort
+template <typename RandomIt>
+void merge(RandomIt first, RandomIt midpoint, RandomIt last) {
+  auto left_size = midpoint - first;
+  auto left_copy = std::vector<typename RandomIt::value_type>{};
+  left_copy.reserve(left_size);
+  left_copy.insert(left_copy.end(), first, midpoint);
+
+  auto insert_point = first;
+  auto left_front = left_copy.begin();
+  auto right_front = midpoint;
+  while (left_front != left_copy.end() and right_front != last) {
+    if (*right_front < *left_front) {
+      *insert_point++ = *right_front++;
+    } else {
+      *insert_point++ = *left_front++;
+    }
+  }
+  std::copy(left_front, left_copy.end(), insert_point);
+}
+template <typename RandomIt>
+void merge_sort(RandomIt first, RandomIt last) {
+  if ((last - first) < 2) {
+    return;
+  }
+
+  auto midpoint = first + (last - first) / 2;
+  merge_sort(first, midpoint);
+  merge_sort(midpoint, last);
+  merge(first, midpoint, last);
 }
