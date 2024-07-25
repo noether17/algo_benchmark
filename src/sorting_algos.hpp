@@ -48,7 +48,7 @@ void bubble_sort(RandomIt first, RandomIt last) {
 // quick sort
 template <typename RandomIt>
 void quick_sort(RandomIt first, RandomIt last) {
-  if (first == last) {
+  if ((last - first) < 2) {
     return;
   }
   auto pivot_loc = first + (last - first) / 2;  // use midpoint as pivot
