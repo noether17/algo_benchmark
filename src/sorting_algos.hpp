@@ -84,9 +84,7 @@ void max_heap_combine(RandomIt heap_first, int heap_size, int index) {
     largest = heap_first[largest] < heap_first[right] ? right : largest;
   }
   if (largest != index) {
-    auto temp = heap_first[index];
-    heap_first[index] = heap_first[largest];
-    heap_first[largest] = temp;
+    std::swap(heap_first[index], heap_first[largest]);
     max_heap_combine(heap_first, heap_size, largest);
   }
 }
@@ -98,9 +96,7 @@ void heap_sort(RandomIt first, RandomIt last) {
     max_heap_combine(first, size, i);
   }
   for (--last; last != first; --last) {
-    auto temp = *first;
-    *first = *last;
-    *last = temp;
+    std::swap(*first, *last);
     max_heap_combine(first, last - first, 0);
   }
 }
