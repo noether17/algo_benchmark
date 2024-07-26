@@ -72,6 +72,13 @@ struct MergeSorter {
   }
 };
 
+struct StdSorter {
+  template <typename RandomIt>
+  void static sort(RandomIt first, RandomIt last) {
+    std::sort(first, last);
+  }
+};
+
 template <typename SortType>
 static void BM_Sort(benchmark::State& state) {
   auto const size = state.range(0);
@@ -126,5 +133,8 @@ BENCHMARK_TEMPLATE(BM_Sort, HeapSorter)
     ->RangeMultiplier(2)
     ->Range(min_array_size, max_array_size);
 BENCHMARK_TEMPLATE(BM_Sort, MergeSorter)
+    ->RangeMultiplier(2)
+    ->Range(min_array_size, max_array_size);
+BENCHMARK_TEMPLATE(BM_Sort, StdSorter)
     ->RangeMultiplier(2)
     ->Range(min_array_size, max_array_size);
