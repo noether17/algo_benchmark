@@ -24,6 +24,7 @@ def main():
 
         unique_element_sizes = ['Small', 'Medium', 'Large']
         for element_size in unique_element_sizes:
+            plt.figure(figsize=(8,6))
             # plot data
             element_size_indices = np.where(element_sizes == element_size)
             current_family_indices = family_indices[np.where(element_sizes == element_size)]
@@ -55,7 +56,7 @@ def main():
             plt.title(f"Performance of Sorting Algorithms with {current_element_bytes}B Elements")
             plt.legend()
             plt.grid()
-            plt.show()
+            plt.savefig(f"sorting_alg_perf_at_{current_element_bytes}_bytes.png")
 
 if __name__ == "__main__":
     main()
