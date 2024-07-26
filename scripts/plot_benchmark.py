@@ -58,7 +58,7 @@ def main():
             plt.xlim(1, 1024)
             plt.ylabel("Time per Item (s)")
             plt.title(f"Performance of Sorting Algorithms with {current_element_bytes}B Elements")
-            plt.legend()
+            plt.legend(loc='upper left')
             plt.grid()
             plt.savefig(f"sorting_alg_perf_at_{current_element_bytes}_bytes.png")
 
