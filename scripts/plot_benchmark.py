@@ -2,6 +2,9 @@ import json
 import matplotlib.pyplot as plt
 import numpy as np
 
+element_bytes = { 'Small': 4, 'Medium': 64, 'Large': 1024 }
+repetitions = 256
+
 def main():
     with open("data.json") as input_file:
         # read json file
@@ -20,8 +23,8 @@ def main():
         seconds_per_item = 1.0 / items_per_second
 
         unique_element_sizes = ['Small', 'Medium', 'Large']
-        element_bytes = { 'Small': 4, 'Medium': 64, 'Large': 1024 }
         for element_size in unique_element_sizes:
+            # plot data
             element_size_indices = np.where(element_sizes == element_size)
             current_family_indices = family_indices[np.where(element_sizes == element_size)]
             unique_family_indices = np.unique(current_family_indices)
@@ -29,10 +32,27 @@ def main():
                 current_indices = np.where(family_indices == family_index)
                 algo_name = algo_names[current_indices[0][0]]
                 plt.loglog(array_sizes[current_indices], seconds_per_item[current_indices], label=algo_name)
+
+            # plot caches
+            current_element_bytes = element_bytes[element_size]
+            bytes_processed_per_array_item = current_element_bytes * repetitions
+
+            l1_cache = [cache for cache in caches if cache['level'] == 1 and cache['type'] == "Data"][0]
+            items_to_fill_l1 = l1_cache['size'] / bytes_processed_per_array_item
+            plt.axvline(items_to_fill_l1, color='b', alpha=0.5, linestyle='--', label="Caches")
+
+            l2_cache = [cache for cache in caches if cache['level'] == 2][0]
+            items_to_fill_l2 = l2_cache['size'] / bytes_processed_per_array_item
+            plt.axvline(items_to_fill_l2, color='b', alpha=0.5, linestyle='--')
+
+            l3_cache = [cache for cache in caches if cache['level'] == 3][0]
+            items_to_fill_l3 = l3_cache['size'] / bytes_processed_per_array_item
+            plt.axvline(items_to_fill_l3, color='b', alpha=0.5, linestyle='--')
+
             plt.xlabel("Items in Array")
             plt.xlim(1, 1024)
             plt.ylabel("Time per Item (s)")
-            plt.title(f"Performance of Sorting Algorithms with {element_bytes[element_size]}B Elements")
+            plt.title(f"Performance of Sorting Algorithms with {current_element_bytes}B Elements")
             plt.legend()
             plt.grid()
             plt.show()
