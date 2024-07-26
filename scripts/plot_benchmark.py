@@ -4,6 +4,9 @@ import numpy as np
 
 element_bytes = { 'Small': 4, 'Medium': 64, 'Large': 1024 }
 repetitions = 256
+markers = {'NoSort': '', 'InsertionSort': '.', 'BinaryInsertionSort': '.',
+           'BubbleSort': 'o', 'QuickSort': '+', 'HoareQuickSort': '+',
+           'HeapSort': 'x', 'MergeSort': '^', 'StdSort': '*'}
 
 def main():
     with open("data.json") as input_file:
@@ -24,7 +27,7 @@ def main():
 
         unique_element_sizes = ['Small', 'Medium', 'Large']
         for element_size in unique_element_sizes:
-            plt.figure(figsize=(8,6))
+            plt.figure(figsize=(12,9))
             # plot data
             element_size_indices = np.where(element_sizes == element_size)
             current_family_indices = family_indices[np.where(element_sizes == element_size)]
@@ -32,7 +35,8 @@ def main():
             for family_index in unique_family_indices:
                 current_indices = np.where(family_indices == family_index)
                 algo_name = algo_names[current_indices[0][0]]
-                plt.loglog(array_sizes[current_indices], seconds_per_item[current_indices], label=algo_name)
+                plt.loglog(array_sizes[current_indices], seconds_per_item[current_indices],
+                           label=algo_name, marker=markers[algo_name])
 
             # plot caches
             current_element_bytes = element_bytes[element_size]
