@@ -1,6 +1,7 @@
 #pragma once
 
 #include <algorithm>
+#include <array>
 #include <vector>
 
 // no sort
@@ -162,4 +163,44 @@ void merge_sort(RandomIt first, RandomIt last) {
   merge_sort(first, midpoint);
   merge_sort(midpoint, last);
   merge(first, midpoint, last);
+}
+
+// merge sort with small buffer optimization
+template <typename RandomIt>
+void sbo_merge(RandomIt first, RandomIt midpoint, RandomIt last) {
+  using Value = typename RandomIt::value_type;
+  auto static constexpr buffer_size = 8;
+
+  auto left_size = midpoint - first;
+  auto left_buffer = std::array<Value, buffer_size>{};
+  auto left_vec = std::vector<Value>{};
+  auto *left_first =
+      left_size <= buffer_size
+          ? (std::copy(first, midpoint, left_buffer.begin()),
+             left_buffer.data())
+          : (left_vec.reserve(left_size),
+             left_vec.insert(left_vec.end(), first, midpoint), left_vec.data());
+  auto *left_last = left_first + left_size;
+
+  auto insert_point = first;
+  auto right_first = midpoint;
+  while (left_first != left_last and right_first != last) {
+    if (*right_first < *left_first) {
+      *insert_point++ = *right_first++;
+    } else {
+      *insert_point++ = *left_first++;
+    }
+  }
+  std::copy(left_first, left_last, insert_point);
+}
+template <typename RandomIt>
+void sbo_merge_sort(RandomIt first, RandomIt last) {
+  if ((last - first) < 2) {
+    return;
+  }
+
+  auto midpoint = first + (last - first) / 2;
+  merge_sort(first, midpoint);
+  merge_sort(midpoint, last);
+  sbo_merge(first, midpoint, last);
 }

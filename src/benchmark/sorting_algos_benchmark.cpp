@@ -73,6 +73,13 @@ struct MergeSorter {
   }
 };
 
+struct SBOMergeSorter {
+  template <typename RandomIt>
+  void static sort(RandomIt first, RandomIt last) {
+    sbo_merge_sort(first, last);
+  }
+};
+
 struct StdSorter {
   template <typename RandomIt>
   void static sort(RandomIt first, RandomIt last) {
@@ -151,6 +158,9 @@ BENCHMARK_TEMPLATE(BM_Sort, HeapSorter, SmallElement)
 BENCHMARK_TEMPLATE(BM_Sort, MergeSorter, SmallElement)
     ->RangeMultiplier(2)
     ->Range(min_array_size, max_array_size);
+BENCHMARK_TEMPLATE(BM_Sort, SBOMergeSorter, SmallElement)
+    ->RangeMultiplier(2)
+    ->Range(min_array_size, max_array_size);
 BENCHMARK_TEMPLATE(BM_Sort, StdSorter, SmallElement)
     ->RangeMultiplier(2)
     ->Range(min_array_size, max_array_size);
@@ -180,6 +190,9 @@ BENCHMARK_TEMPLATE(BM_Sort, HeapSorter, MediumElement)
 BENCHMARK_TEMPLATE(BM_Sort, MergeSorter, MediumElement)
     ->RangeMultiplier(2)
     ->Range(min_array_size, max_array_size);
+BENCHMARK_TEMPLATE(BM_Sort, SBOMergeSorter, MediumElement)
+    ->RangeMultiplier(2)
+    ->Range(min_array_size, max_array_size);
 BENCHMARK_TEMPLATE(BM_Sort, StdSorter, MediumElement)
     ->RangeMultiplier(2)
     ->Range(min_array_size, max_array_size);
@@ -207,6 +220,9 @@ BENCHMARK_TEMPLATE(BM_Sort, HeapSorter, LargeElement)
     ->RangeMultiplier(2)
     ->Range(min_array_size, max_array_size);
 BENCHMARK_TEMPLATE(BM_Sort, MergeSorter, LargeElement)
+    ->RangeMultiplier(2)
+    ->Range(min_array_size, max_array_size);
+BENCHMARK_TEMPLATE(BM_Sort, SBOMergeSorter, LargeElement)
     ->RangeMultiplier(2)
     ->Range(min_array_size, max_array_size);
 BENCHMARK_TEMPLATE(BM_Sort, StdSorter, LargeElement)

@@ -6,7 +6,7 @@ element_bytes = { 'Small': 4, 'Medium': 64, 'Large': 1024 }
 repetitions = 256
 markers = {'NoSort': '', 'InsertionSort': '.', 'BinaryInsertionSort': '.',
            'BubbleSort': 'o', 'QuickSort': '+', 'HoareQuickSort': '+',
-           'HeapSort': 'x', 'MergeSort': '^', 'StdSort': '*'}
+           'HeapSort': 'x', 'MergeSort': '^', 'SBOMergeSort': '^', 'StdSort': '*'}
 
 def main():
     with open("data.json") as input_file:
