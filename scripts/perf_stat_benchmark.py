@@ -7,10 +7,17 @@ def list_of_strings(strs):
 def list_of_ints(arg):
     return list(map(int, arg.split(',')))
 
+# Hardware events for perf to measure
 events = "cycles,instructions,L1-dcache-loads,L1-dcache-load-misses," \
          + "LLC-loads,LLC-load-misses,branches,branch-misses"
 
-benchmark = "./src/benchmark/sorting_algos_benchmark" # must be run from build dir
+# Path to benchmark executable (this script must be run from build dir)
+benchmark = "./src/benchmark/sorting_algos_benchmark"
+
+# Complete lists of options, to enable passing "All" options
+all_elements = list_of_strings("Small,Medium,Large")
+all_algos = list_of_strings("NoSort,InsertionSort,BinaryInsertionSort,BubbleSort,QuickSort," \
+                            + "HoareQuickSort,HeapSort,MergeSort,SBOMergeSort,StdSort")
 
 def main():
     parser = argparse.ArgumentParser()
@@ -24,6 +31,9 @@ def main():
     parser.add_argument('--output-file', '-o', type=str, help="Path to output file.")
 
     args = parser.parse_args()
+    print(args.element_sizes)
+    if args.element_sizes[0] == "All": args.element_sizes = all_elements
+    if args.algorithms[0] == "All": args.algorithms = all_algos
     console_output = ""
     for s in args.element_sizes:
         for n in args.array_sizes:
