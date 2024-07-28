@@ -26,7 +26,7 @@ def main():
     for s in args.element_sizes:
         for n in args.array_sizes:
             for alg in args.algorithms:
-                filter_str = f"<{alg}er, {s}Element>/{n}"
+                filter_str = f"<{alg}er, {s}Element>/{n}$"
                 p = subprocess.run(["perf", "stat", "-e", events, benchmark,
                                     f"--benchmark_filter={filter_str}"],
                                    stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
