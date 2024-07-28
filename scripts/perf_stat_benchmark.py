@@ -31,7 +31,6 @@ def main():
     parser.add_argument('--output-file', '-o', type=str, help="Path to output file.")
 
     args = parser.parse_args()
-    print(args.element_sizes)
     if args.element_sizes[0] == "All": args.element_sizes = all_elements
     if args.algorithms[0] == "All": args.algorithms = all_algos
     console_output = ""
