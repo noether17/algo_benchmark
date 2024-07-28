@@ -19,6 +19,8 @@ def main():
     parser.add_argument('--algorithms', '-a', type=list_of_strings, help="NoSort,InsertionSort,"
                         + "BinaryInsertionSort,BubbleSort,QuickSort,HoareQuickSort,HeapSort,"
                         + "MergeSort,SBOMergeSort,StdSort")
+    parser.add_argument('--iterations', '-i', type=int, default=1000, help="Number of iterations "
+                        + "for each benchmark")
     parser.add_argument('--output-file', '-o', type=str, help="Path to output file.")
 
     args = parser.parse_args()
@@ -28,7 +30,8 @@ def main():
             for alg in args.algorithms:
                 filter_str = f"<{alg}er, {s}Element>/{n}$"
                 p = subprocess.run(["perf", "stat", "-e", events, benchmark,
-                                    f"--benchmark_filter={filter_str}"],
+                                    f"--benchmark_filter={filter_str}",
+                                    f"--benchmark_min_time={args.iterations}x"],
                                    stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
                 console_output += p.stdout.decode()
     if args.output_file is None:
