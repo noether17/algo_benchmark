@@ -140,27 +140,27 @@ BENCHMARK_TEMPLATE(BM_Sort, NoSorter, SmallElement)
 BENCHMARK_TEMPLATE(BM_Sort, InsertionSorter, SmallElement)
     ->RangeMultiplier(2)
     ->Range(min_array_size, max_array_size);
-BENCHMARK_TEMPLATE(BM_Sort, BinaryInsertionSorter, SmallElement)
-    ->RangeMultiplier(2)
-    ->Range(min_array_size, max_array_size);
+// BENCHMARK_TEMPLATE(BM_Sort, BinaryInsertionSorter, SmallElement)
+//     ->RangeMultiplier(2)
+//     ->Range(min_array_size, max_array_size);
 BENCHMARK_TEMPLATE(BM_Sort, BubbleSorter, SmallElement)
     ->RangeMultiplier(2)
     ->Range(min_array_size, max_array_size);
 BENCHMARK_TEMPLATE(BM_Sort, QuickSorter, SmallElement)
     ->RangeMultiplier(2)
     ->Range(min_array_size, max_array_size);
-BENCHMARK_TEMPLATE(BM_Sort, HoareQuickSorter, SmallElement)
-    ->RangeMultiplier(2)
-    ->Range(min_array_size, max_array_size);
+// BENCHMARK_TEMPLATE(BM_Sort, HoareQuickSorter, SmallElement)
+//     ->RangeMultiplier(2)
+//     ->Range(min_array_size, max_array_size);
 BENCHMARK_TEMPLATE(BM_Sort, HeapSorter, SmallElement)
     ->RangeMultiplier(2)
     ->Range(min_array_size, max_array_size);
 BENCHMARK_TEMPLATE(BM_Sort, MergeSorter, SmallElement)
     ->RangeMultiplier(2)
     ->Range(min_array_size, max_array_size);
-BENCHMARK_TEMPLATE(BM_Sort, SBOMergeSorter, SmallElement)
-    ->RangeMultiplier(2)
-    ->Range(min_array_size, max_array_size);
+// BENCHMARK_TEMPLATE(BM_Sort, SBOMergeSorter, SmallElement)
+//     ->RangeMultiplier(2)
+//     ->Range(min_array_size, max_array_size);
 BENCHMARK_TEMPLATE(BM_Sort, StdSorter, SmallElement)
     ->RangeMultiplier(2)
     ->Range(min_array_size, max_array_size);
@@ -172,27 +172,27 @@ BENCHMARK_TEMPLATE(BM_Sort, NoSorter, MediumElement)
 BENCHMARK_TEMPLATE(BM_Sort, InsertionSorter, MediumElement)
     ->RangeMultiplier(2)
     ->Range(min_array_size, max_array_size);
-BENCHMARK_TEMPLATE(BM_Sort, BinaryInsertionSorter, MediumElement)
-    ->RangeMultiplier(2)
-    ->Range(min_array_size, max_array_size);
+// BENCHMARK_TEMPLATE(BM_Sort, BinaryInsertionSorter, MediumElement)
+//     ->RangeMultiplier(2)
+//     ->Range(min_array_size, max_array_size);
 BENCHMARK_TEMPLATE(BM_Sort, BubbleSorter, MediumElement)
     ->RangeMultiplier(2)
     ->Range(min_array_size, max_array_size);
 BENCHMARK_TEMPLATE(BM_Sort, QuickSorter, MediumElement)
     ->RangeMultiplier(2)
     ->Range(min_array_size, max_array_size);
-BENCHMARK_TEMPLATE(BM_Sort, HoareQuickSorter, MediumElement)
-    ->RangeMultiplier(2)
-    ->Range(min_array_size, max_array_size);
+// BENCHMARK_TEMPLATE(BM_Sort, HoareQuickSorter, MediumElement)
+//     ->RangeMultiplier(2)
+//     ->Range(min_array_size, max_array_size);
 BENCHMARK_TEMPLATE(BM_Sort, HeapSorter, MediumElement)
     ->RangeMultiplier(2)
     ->Range(min_array_size, max_array_size);
 BENCHMARK_TEMPLATE(BM_Sort, MergeSorter, MediumElement)
     ->RangeMultiplier(2)
     ->Range(min_array_size, max_array_size);
-BENCHMARK_TEMPLATE(BM_Sort, SBOMergeSorter, MediumElement)
-    ->RangeMultiplier(2)
-    ->Range(min_array_size, max_array_size);
+// BENCHMARK_TEMPLATE(BM_Sort, SBOMergeSorter, MediumElement)
+//     ->RangeMultiplier(2)
+//     ->Range(min_array_size, max_array_size);
 BENCHMARK_TEMPLATE(BM_Sort, StdSorter, MediumElement)
     ->RangeMultiplier(2)
     ->Range(min_array_size, max_array_size);
@@ -204,27 +204,27 @@ BENCHMARK_TEMPLATE(BM_Sort, NoSorter, LargeElement)
 BENCHMARK_TEMPLATE(BM_Sort, InsertionSorter, LargeElement)
     ->RangeMultiplier(2)
     ->Range(min_array_size, max_array_size);
-BENCHMARK_TEMPLATE(BM_Sort, BinaryInsertionSorter, LargeElement)
-    ->RangeMultiplier(2)
-    ->Range(min_array_size, max_array_size);
+// BENCHMARK_TEMPLATE(BM_Sort, BinaryInsertionSorter, LargeElement)
+//     ->RangeMultiplier(2)
+//     ->Range(min_array_size, max_array_size);
 BENCHMARK_TEMPLATE(BM_Sort, BubbleSorter, LargeElement)
     ->RangeMultiplier(2)
     ->Range(min_array_size, max_array_size);
 BENCHMARK_TEMPLATE(BM_Sort, QuickSorter, LargeElement)
     ->RangeMultiplier(2)
     ->Range(min_array_size, max_array_size);
-BENCHMARK_TEMPLATE(BM_Sort, HoareQuickSorter, LargeElement)
-    ->RangeMultiplier(2)
-    ->Range(min_array_size, max_array_size);
+// BENCHMARK_TEMPLATE(BM_Sort, HoareQuickSorter, LargeElement)
+//     ->RangeMultiplier(2)
+//     ->Range(min_array_size, max_array_size);
 BENCHMARK_TEMPLATE(BM_Sort, HeapSorter, LargeElement)
     ->RangeMultiplier(2)
     ->Range(min_array_size, max_array_size);
 BENCHMARK_TEMPLATE(BM_Sort, MergeSorter, LargeElement)
     ->RangeMultiplier(2)
     ->Range(min_array_size, max_array_size);
-BENCHMARK_TEMPLATE(BM_Sort, SBOMergeSorter, LargeElement)
-    ->RangeMultiplier(2)
-    ->Range(min_array_size, max_array_size);
+// BENCHMARK_TEMPLATE(BM_Sort, SBOMergeSorter, LargeElement)
+//     ->RangeMultiplier(2)
+//     ->Range(min_array_size, max_array_size);
 BENCHMARK_TEMPLATE(BM_Sort, StdSorter, LargeElement)
     ->RangeMultiplier(2)
     ->Range(min_array_size, max_array_size);
