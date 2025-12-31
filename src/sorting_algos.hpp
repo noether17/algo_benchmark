@@ -200,7 +200,7 @@ void sbo_merge_sort(RandomIt first, RandomIt last) {
   }
 
   auto midpoint = first + (last - first) / 2;
-  merge_sort(first, midpoint);
-  merge_sort(midpoint, last);
+  sbo_merge_sort(first, midpoint);
+  sbo_merge_sort(midpoint, last);
   sbo_merge(first, midpoint, last);
 }
